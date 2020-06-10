@@ -2,20 +2,81 @@ from django.shortcuts import render
 from .models import Plants
 from .forms import AddPlantsForm
 from core.forms import ManagerProfile
+from django.contrib import messages
 
 
 def home(request):
-    print(request.user.username)
-    return render(request, 'nursery/manager_home.html')
+    
+    user =request.user
+    print(user) 
+    manager = ManagerProfile.objects.get(user__username= user)
+    plants = Plants.objects.filter(manager = manager)
+
+    context = {'plants' : plants,
+            'manager' : manager}
+    return render(request, 'nursery/manager_home.html',context)
 
 def add_plant(request):
+    #debugging
     user =request.user
-    manager = ManagerProfile.objects.get(user= user)
+    print(user)
+    manager = ManagerProfile.objects.get(user__username= user)
+    print(manager)
 
     plants = Plants.objects.filter(manager = manager)
     print(plants)
-
+    #end debug here
 
     form = AddPlantsForm
+    if request.method == 'POST':
+        form = AddPlantsForm(request.POST)
+        if form.is_valid():
+            print("valid")
+            plant = form.save()
+            messages.success(request,f"New Plant added")
+
+        else:
+            return redirect('#')
+
+    else:
+        # for msg in form.error_messages:
+        #     messages.error(request,f"{msg} : {form.error_messages[msg]}")
+        pass
+
+
+    #form = AddPlantsForm(initial={'manager' : manager})
+    
     context = {'form' : form}
     return render(request = request,template_name='nursery/add_plant.html', context = context)
+
+
+
+
+# def register(request):
+    
+#     #following code will handle POST requests
+#     if request.method == 'POST':
+#         print("POST method initiated")
+#         form = NewUserForm(request.POST)
+#         if form.is_valid():                                     
+#             print("valid")
+#             user = form.save()
+#             username = form.cleaned_data.get('username')
+#             uid = user.id
+
+#             #displays messages, inbuilt library in django
+#             messages.success(request,f"New Account Created : {username}")
+#             login(request,user)
+#             messages.info(request,f"You are now logged in as : {username}")
+
+#         else:
+#             return redirect('/')
+
+#     else:
+#         for msg in form.error_messages:
+#             messages.error(request,f"{msg} : {form.error_messages[msg]}")
+
+#     context = {"form"  : NewUserForm}
+#     return render(request = request, template_name = "register/register.html",context = context)
+
+

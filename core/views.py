@@ -40,7 +40,7 @@ def buyer_profile_view(request):
         profile_form = BuyerForm(request.POST,prefix ='PF')
 
         if user_form.is_valid() and profile_form.is_valid():
-            profile_form.save()
+            
             user = user_form.save(commit=False)
             
 
@@ -75,7 +75,7 @@ def manager_profile_view(request):
             user.save()
             print('Two')
             #print(request.user.is_buyer)
-            #user.manager_profile.nursery_name = profile_form.cleaned_data.get('nursery_name')
+            user.manager_profile.nursery_name = profile_form1.cleaned_data.get('nursery_name')
             #user.manager_profile.location = profile_form.cleaned_data.get('location')
             user.manager_profile.save()
 
