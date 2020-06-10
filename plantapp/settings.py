@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #local app
     'core',
     'nursery',
+    'buyer',
     
 ]
 

@@ -1,0 +1,30 @@
+{% extends 'core/header.html' %}
+
+{% block content %}
+<div class="container">
+    
+        <div class="row">
+          {% for plant in plants %}
+            <div class="col s12 m6">
+              <!-- <a href="{{ent.pk}}", style="color:#000"> -->
+              <div class="card small hoverable white">
+                <div class="card-image">
+                  
+                  <span class="card-title">{{plant.plant_name}}</span>
+                </div>
+                <div class="card-content">
+                  <p>{{plant.plant_desc}}</p>
+                  <p>{{plant.plant_price}}</p>
+                </div>
+                
+              </div>
+            </div>
+          </a>
+          
+          {% endfor %}
+        </div>
+</div>
+
+
+
+{% endblock content %}
