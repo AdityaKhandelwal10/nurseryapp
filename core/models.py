@@ -8,17 +8,27 @@ class User(AbstractUser):
     email = models.EmailField()
     category = models.CharField(max_length=200,null = True)
 
+    def __str__(self):
+        return self.username
+
 
 class BuyerProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null = True,related_name = 'buyer_profile')
     bio = models.CharField(max_length=30, blank=True)
     location = models.CharField(max_length=30, blank=True)
 
+    def __str__(self):
+        return self.user
+    
+
 
 
 class ManagerProfile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE,null=True,related_name = 'manager_profile')
     nursery_name = models.CharField(max_length=100,blank=True)
+
+    def __str__(self):
+        return self.user
     
 
     
