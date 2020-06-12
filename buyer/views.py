@@ -2,6 +2,21 @@ from django.shortcuts import render,redirect
 from nursery.models import Plants
 from core.models import BuyerProfile
 from .models import Cart, OrderPlaced
+from django.contrib.auth.decorators import  login_required,user_passes_test
+
+
+def buyer_check(user):
+    if not user.is_superuser:
+
+        buyers = BuyerProfile.objects.all()
+        print(user)
+        return buyers.filter(user=user).exists()
+    else:
+        return user.is_superuser
+
+    
+@login_required(login_url = '/login/')
+@user_passes_test(buyer_check, login_url = '/login/')
 
 def buyer_home(request):
     
@@ -10,6 +25,9 @@ def buyer_home(request):
     return render(request= request, template_name ='buyer/buyer_home.html', context = context)
 
 #view to see what orders have been placed by the user
+    
+@login_required(login_url = '/login/')
+@user_passes_test(buyer_check, login_url = '/login/')
 def orders_placed(request):
     user = request.user
     print(user) 
@@ -22,27 +40,10 @@ def orders_placed(request):
     context={'orders' : orders}
     return render(request=request, template_name = 'buyer/cart.html', context = context)
 
-#view to add item to the cart
-# def add_to_cart(request,pk): #primary key in of plants
-#     user = request.user
-    
-#     buyer = BuyerProfile.objects.get(user__username= user)
-#     print(buyer)
-#     print('before if')
-    
-#     if not buyer in Cart.objects.all():
-#         cart = Cart()
-#         cart.buyer.add(buyer)
-        
-    
-#     #cart = Cart.objects.get(buyer = buyer) 
-#     plant = Plants.objects.get(pk=pk)
-#     if not plant in cart.plants.all():
-#         cart.plants.add()
-#     else:
-#         print('Already there')
 
-#     return redirect('buyer-cart/')
+
+@login_required(login_url = '/login/')
+@user_passes_test(buyer_check, login_url = '/login/')
 
 def add_to_cart(request,pk):
     user = request.user
@@ -70,6 +71,9 @@ def add_to_cart(request,pk):
 
     return redirect('/buyer/buyer-cart/')
 
+
+@login_required(login_url = '/login/')
+@user_passes_test(buyer_check, login_url = '/login/')
 def delete_item(request,pk):
     user = request.user
     buyer = BuyerProfile.objects.get(user = user)
@@ -92,6 +96,8 @@ def delete_item(request,pk):
 
 #configure total price as well
 
+@login_required(login_url = '/login/')
+@user_passes_test(buyer_check, login_url = '/login/')
 def buy_cart(request):
     user = request.user
     buyer = BuyerProfile.objects.get(user = user)
