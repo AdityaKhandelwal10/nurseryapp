@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Plants
 from .forms import AddPlantsForm
 from core.forms import ManagerProfile
 from django.contrib import messages
+from buyer.models import OrderPlaced as OrderPlaced
 
 
 def home(request):
@@ -21,15 +22,14 @@ def add_plant(request):
     user =request.user
     print(user)
     manager = ManagerProfile.objects.get(user__username= user)
-    print(manager)
-
-    plants = Plants.objects.filter(manager = manager)
-    print(plants)
     #end debug here
 
     form = AddPlantsForm
     if request.method == 'POST':
-        form = AddPlantsForm(request.POST)
+        plants = Plants.objects.create(manager = manager)
+        print(plants)
+
+        form = AddPlantsForm(request.POST, instance= plants)
         if form.is_valid():
             print("valid")
             plant = form.save()
@@ -48,6 +48,25 @@ def add_plant(request):
     
     context = {'form' : form}
     return render(request = request,template_name='nursery/add_plant.html', context = context)
+
+
+
+def get_placed_orders(request):
+    user = request.user
+    manager = ManagerProfile.objects.get(user = user)
+
+    print('Manager is retrieved')
+    print(user)
+
+    #get all cart objects
+    # final_orders = OrderPlaced.
+
+    # for ordered_plants in final_orders.filter(manager = manager):
+    #     print("running inside the for loop")
+    #     print(ordered_plants)
+
+    return redirect('/')
+
 
 
 

@@ -12,20 +12,17 @@
           </tr>
         </thead>
         
-        {% for order in orders.plants.all %}
+        {% for order in orders.plants_op.all %}
         <tbody>
           <tr>
             <td>{{ order.plant_name}}</td>
             <td>{{ order.plant_desc}}</td>
             <td>{{ order.plant_price}}</td>
-            <td><button><a href="/buyer/delete-item/{{order.pk}}">delete</a></button></td>
-            
+            <!-- <td><button><a href="/buyer/delete-item/{{order.pk}}">delete</a></button></td>
+             -->
           </tr>
         </tbody>
         {% endfor %}
-        <th>
-          <td><button><a href="/buyer/orders-placed/">Buy Items</a></button></td>
-        </th>
       </table>
     
 </div>

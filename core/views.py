@@ -89,3 +89,7 @@ def manager_profile_view(request):
             'profile_form': profile_form1,
         }
     return render(request= request, template_name='core/manager_profile.html',context =context)
+
+
+def landing_page(request):
+    return render(request = request, template_name = 'core/landing_page.html')

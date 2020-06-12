@@ -18,7 +18,7 @@ class BuyerProfile(models.Model):
     location = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
     
 
 
@@ -28,7 +28,7 @@ class ManagerProfile(models.Model):
     nursery_name = models.CharField(max_length=100,blank=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
     
 
     
@@ -57,21 +57,3 @@ def save_user_profile(sender, instance, **kwargs):
 	else:
 		pass
 
-
-# @receiver(post_save, sender=User, dispatch_uid='save_new_manager')
-# def save_profile(sender, instance, created, **kwargs):
-# 	user = instance
-# 	if created:
-# 		user.manager_profile.save()
-# 	else:
-# 		ManagerProfile.objects.get_or_create(user = instance)
-
-# @receiver(pre_save, sender=User)
-# def change_if_buyer(sender, instance, *args, **kwargs):
-	
-# 	if instance.is_buyer:
-# 		print('buyer')
-# 		BuyerProfile.objects.get_or_create(user = instance)
-# 	else:
-# 		print('manager')
-# 		ManagerProfile.objects.get_or_create(user = instance)

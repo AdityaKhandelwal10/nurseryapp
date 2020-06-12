@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from nursery.models import Plants
 from core.models import BuyerProfile
-from .models import Cart
+from .models import Cart, OrderPlaced
 
 def buyer_home(request):
     
@@ -88,3 +88,43 @@ def delete_item(request,pk):
     
 
     return redirect('/buyer/buyer-cart/')
+
+
+#configure total price as well
+
+def buy_cart(request):
+    user = request.user
+    buyer = BuyerProfile.objects.get(user = user)
+    print(user)
+    print('\n1 is working\n')
+    print('2nd block ends here \n')
+    cart = Cart.objects.get(buyer = buyer)
+    print(cart)
+
+    print('\n 3rd block starting here\n')
+    # plant = Plants.objects.get(id = pk)
+    # print(plant)
+
+    #cart.plants.remove(plant)
+    print('\n 3rd block ends here\n')
+    
+    print('\n Fourth block starts here')
+    
+    placed_orders = OrderPlaced.objects.create(buyer_op = buyer)
+    print(placed_orders.pk)
+
+    if cart.plants.all is not None:
+
+        for plant in cart.plants.all():
+            print(plant)
+            placed_orders.plants_op.add(plant)
+    
+        context = {'orders' : placed_orders}
+        return render(request = request, template_name = 'buyer/placed_orders.html', context = context)
+
+        
+    else:
+        
+        return render(request = request, template_name = 'buyer/placed_orders.html', context ={})
+
+

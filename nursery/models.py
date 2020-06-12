@@ -8,7 +8,11 @@ class Plants(models.Model):
     manager = models.ForeignKey(ManagerProfile,on_delete=models.CASCADE)
     plant_name = models.CharField(max_length=200)
     plant_desc = models.CharField(max_length=200)
-    plant_price = models.IntegerField()
+    plant_price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.plant_name
+
 
 # class OrderReceived(models.Model):
 #     manager = models.ForeignKey(ManagerProfile,on_delete=models.CASCADE)
