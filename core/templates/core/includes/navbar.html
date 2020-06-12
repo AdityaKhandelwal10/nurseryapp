@@ -1,16 +1,40 @@
 <nav>
     <div class="nav-wrapper teal" >
-      <a href="#!" class="brand-logo">Logo</a>
+      <a href="/" class="brand-logo">Logo</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Sass</a></li>
-        <li><a href="#">Components</a></li>
+       
         {% if user.is_authenticated%}
+          {% if user.category == 'Buyer'%}
+            <li><a href="/buyer/buyer-home/">Homepage</a></li>
+            <li><a href="/buyer/buyer-cart/">Cart</a></li>
+            <li><a href="/buyer/placed-orders/">Orders Placed</a></li>
+            <li><a href="#">{{user.username}}</a></li>
+            <li><a href="/logout/">Logout</a></li>
+            
+          {% endif %}
 
-        <li><a href="/account">{{user.username}}</a></li>
-        <li><a href="/logout/">Logout</a></li>
+        {% if user.category == 'Manager'%}
+          <li><a href="nursery/manager-home/">Homepage</a></li>
+          <li><a href="nursery/orders-received/">Orders Received</a></li>
+          <li><a href="#">{{user.username}}</a></li>
+          <li><a href="/logout/">Logout</a></li>
+          
+          
+        {% endif %}
+
+        {% if user.is_superuser %}
+          <li><a href="#">{{user.username}}</a></li>
+          <li><a href="/logout/">Logout</a></li>
+          <li><a href="/logout/">Super</a></li>
+          <li><a href="/buyer/buyer-home/">Buyer</a></li>
+          <li><a href="/nursery/manager-home/">Manager</a></li>
+        {% endif %}
+
+      
         {% else %}
-        <li><a href="/register/">Register</a></li>
+        <li><a href="/buyer-register/">Register as a Buyer</a></li>
+        <li><a href="/manager-register/">Register as a Nursery Manager</a></li>
         <li><a href="/login/">Login</a></li>
         {% endif %}
       </ul>
@@ -18,14 +42,34 @@
   </nav>
 
   <ul class="sidenav" id="mobile-demo">
-    <li><a href="#">Sass</a></li>
-    <li><a href="#">Components</a></li>
+    
     {% if user.is_authenticated%}
+      {% if user.category == 'Buyer'%}
+        <li><a href="#">{{user.username}}</a></li>
+        <li><a href="/logout/">Logout</a></li>
+        <li><a href="/buyer/buyer-home/">Homepage</a></li>
+      {% endif %}
 
-    <li><a href="/account">{{user.username}}</a></li>
-    <li><a href="/logout/">Logout</a></li>
+      {% if user.category == 'Manager'%}
+        <li><a href="#">{{user.username}}</a></li>
+        <li><a href="/logout/">Logout</a></li>
+        <li><a href="nursery/manager-home/">Homepage</a></li>
+      {% endif %}
+
+      {% if user.is_superuser %}
+        <li><a href="#">{{user.username}}</a></li>
+        <li><a href="/logout/">Logout</a></li>
+        <li><a href="/logout/">Super</a></li>
+        <li><a href="/buyer/buyer-home/">Buyer</a></li>
+        <li><a href="/nursery/manager-home/">Manager</a></li>
+      {% endif %}
+
+
+
     {% else %}
-    <li><a href="/register/">Register</a></li>
+
+    <li><a href="/buyer-register/">Register as a Buyer</a></li>
+    <li><a href="/manager-register/">Register as a Nursery Manager</a></li>
     <li><a href="/login/">Login</a></li>
     {% endif %}
   </ul>

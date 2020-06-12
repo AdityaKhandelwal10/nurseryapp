@@ -20,6 +20,11 @@ def login_request(request):
             user = authenticate(username= username,password =password)
             if user is not None :
                 login(request, user)
+                if user.category == 'Buyer':
+                    return redirect('/buyer/buyer-home/')
+                elif user.category == 'Manager':
+                    return redirect('/nursery/manager-home/')
+                    
                 messages.info(request,f"You are now logged in as : {username}")
                 print('login is running')
             else:
